@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37314.3 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModernSchoolDiary.Blazor.Server", "ModernSchoolDiary\ModernSchoolDiary.Blazor.Server\ModernSchoolDiary.Blazor.Server.csproj", "{01233597-D6FE-4125-8046-DD4B5FA3797F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModernSchoolDiary.Module", "ModernSchoolDiary\ModernSchoolDiary.Module\ModernSchoolDiary.Module.csproj", "{DF678B5E-A820-4432-BF86-899573217F42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModernSchoolDiary.Win", "ModernSchoolDiary\ModernSchoolDiary.Win\ModernSchoolDiary.Win.csproj", "{39199A1D-BD41-41DB-880B-9E81A51ED99D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		EasyTest|Any CPU = EasyTest|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{01233597-D6FE-4125-8046-DD4B5FA3797F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01233597-D6FE-4125-8046-DD4B5FA3797F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01233597-D6FE-4125-8046-DD4B5FA3797F}.EasyTest|Any CPU.ActiveCfg = EasyTest|Any CPU
+		{01233597-D6FE-4125-8046-DD4B5FA3797F}.EasyTest|Any CPU.Build.0 = EasyTest|Any CPU
+		{01233597-D6FE-4125-8046-DD4B5FA3797F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01233597-D6FE-4125-8046-DD4B5FA3797F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF678B5E-A820-4432-BF86-899573217F42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF678B5E-A820-4432-BF86-899573217F42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF678B5E-A820-4432-BF86-899573217F42}.EasyTest|Any CPU.ActiveCfg = EasyTest|Any CPU
+		{DF678B5E-A820-4432-BF86-899573217F42}.EasyTest|Any CPU.Build.0 = EasyTest|Any CPU
+		{DF678B5E-A820-4432-BF86-899573217F42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF678B5E-A820-4432-BF86-899573217F42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39199A1D-BD41-41DB-880B-9E81A51ED99D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39199A1D-BD41-41DB-880B-9E81A51ED99D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39199A1D-BD41-41DB-880B-9E81A51ED99D}.EasyTest|Any CPU.ActiveCfg = EasyTest|Any CPU
+		{39199A1D-BD41-41DB-880B-9E81A51ED99D}.EasyTest|Any CPU.Build.0 = EasyTest|Any CPU
+		{39199A1D-BD41-41DB-880B-9E81A51ED99D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39199A1D-BD41-41DB-880B-9E81A51ED99D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D96399B5-2963-490C-8FDA-1FF97AAED809}
+	EndGlobalSection
+EndGlobal
