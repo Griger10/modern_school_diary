@@ -15,6 +15,8 @@ namespace ModernSchoolDiary.Blazor.Server
         }
         public static int Main(string[] args)
         {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("ru-RU");
             if (ContainsArgument(args, "help") || ContainsArgument(args, "h"))
             {
                 Console.WriteLine("Updates the database when its version does not match the application's version.");

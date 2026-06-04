@@ -7,6 +7,7 @@ using DevExpress.Persistent.BaseImpl.EF.StateMachine;
 using DevExpress.Persistent.BaseImpl.EFCore.AuditTrail;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using ModernSchoolDiary.Module.Domain.Models;
 
 namespace ModernSchoolDiary.Module.BusinessObjects
 {
@@ -31,6 +32,18 @@ namespace ModernSchoolDiary.Module.BusinessObjects
         public DbSet<DashboardData> DashboardData { get; set; }
         public DbSet<AuditDataItemPersistent> AuditData { get; set; }
         public DbSet<AuditEFCoreWeakReference> AuditEFCoreWeakReferences { get; set; }
+
+        public DbSet<SchoolClass> SchoolClasses { get; set; }
+        public DbSet<Student> Students { get; set; }
+
+        public DbSet<AcademicTerm> AcademicPeriods { get; set; }
+        public DbSet<Subject> Subjects { get; set; }
+        public DbSet<Teacher> Teachers { get; set; }
+        public DbSet<TeacherSubjectClass> TeacherSubjectClasses { get; set; }
+        public DbSet<Grade> Grades { get; set; }
+        public DbSet<Attendance> Attendances { get; set; }
+        public DbSet<Homework> Homeworks { get; set; }
+        public DbSet<HomeworkSubmission> HomeworkSubmissions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

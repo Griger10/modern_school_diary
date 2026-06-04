@@ -1,6 +1,4 @@
-﻿using System.Configuration;
-using System.Reflection;
-using DevExpress.EntityFrameworkCore.Security;
+﻿using DevExpress.EntityFrameworkCore.Security;
 using DevExpress.ExpressApp;
 using DevExpress.ExpressApp.ApplicationBuilder;
 using DevExpress.ExpressApp.EFCore;
@@ -13,6 +11,9 @@ using DevExpress.Persistent.Base;
 using DevExpress.Persistent.BaseImpl.EF.PermissionPolicy;
 using DevExpress.XtraEditors;
 using Microsoft.EntityFrameworkCore;
+using System.Configuration;
+using System.Globalization;
+using System.Reflection;
 
 namespace ModernSchoolDiary.Win
 {
@@ -28,6 +29,8 @@ namespace ModernSchoolDiary.Win
         [STAThread]
         public static int Main(string[] args)
         {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("ru-RU");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("ru-RU");
             if (ContainsArgument(args, "help") || ContainsArgument(args, "h"))
             {
                 Console.WriteLine("Updates the database when its version does not match the application's version.");

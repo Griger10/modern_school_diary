@@ -269,6 +269,9 @@ namespace ModernSchoolDiary.Blazor.Server
                 endpoints.MapFallbackToPage("/_Host");
                 endpoints.MapControllers();
             });
+            var localizationOptions = app.ApplicationServices
+                .GetRequiredService<Microsoft.Extensions.Options.IOptions<RequestLocalizationOptions>>().Value;
+            app.UseRequestLocalization(localizationOptions);
         }
     }
 }
