@@ -7,7 +7,7 @@ namespace ModernSchoolDiary.Module.Domain.Models
 {
     [DefaultClassOptions]
     [NavigationItem("Школа")]
-    [DisplayName("Учебный период")]
+    [DisplayName("Учебные периоды")]
     [DefaultProperty(nameof(Name))]
     public class AcademicTerm
     {

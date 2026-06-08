@@ -1,6 +1,4 @@
-﻿using DevExpress.Data.Filtering;
-using DevExpress.ExpressApp;
-using DevExpress.ExpressApp.EF;
+﻿using DevExpress.ExpressApp;
 using DevExpress.ExpressApp.Security;
 using DevExpress.ExpressApp.SystemModule;
 using DevExpress.ExpressApp.Updating;
@@ -8,104 +6,194 @@ using DevExpress.Persistent.Base;
 using DevExpress.Persistent.BaseImpl.EF;
 using DevExpress.Persistent.BaseImpl.EF.PermissionPolicy;
 using DevExpress.Persistent.BaseImpl.EFCore.AuditTrail;
-using Microsoft.Extensions.DependencyInjection;
 using ModernSchoolDiary.Module.BusinessObjects;
+using ModernSchoolDiary.Module.Domain.Models;
 
 namespace ModernSchoolDiary.Module.DatabaseUpdate
 {
-    // For more typical usage scenarios, be sure to check out https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.Updating.ModuleUpdater
     public class Updater : ModuleUpdater
     {
         public Updater(IObjectSpace objectSpace, Version currentDBVersion) :
             base(objectSpace, currentDBVersion)
-        {
-        }
+        { }
+
         public override void UpdateDatabaseAfterUpdateSchema()
         {
             base.UpdateDatabaseAfterUpdateSchema();
-            //string name = "MyName";
-            //EntityObject1 theObject = ObjectSpace.FirstOrDefault<EntityObject1>(u => u.Name == name);
-            //if(theObject == null) {
-            //    theObject = ObjectSpace.CreateObject<EntityObject1>();
-            //    theObject.Name = name;
-            //}
 
-            // The code below creates users and roles for testing purposes only.
-            // In production code, you can create users and assign roles to them automatically, as described in the following help topic:
-            // https://docs.devexpress.com/eXpressAppFramework/119064/data-security-and-safety/security-system/authentication
-#if !RELEASE
-            // If a role doesn't exist in the database, create this role
-            var defaultRole = CreateDefaultRole();
-            var adminRole = CreateAdminRole();
+            CreateAdminRole();
+            CreateTeacherRole();
+            CreateStudentRole();
+            CreateDefaultRole();
 
-            ObjectSpace.CommitChanges(); //This line persists created object(s).
-
-            UserManager userManager = ObjectSpace.ServiceProvider.GetRequiredService<UserManager>();
-
-            // If a user named 'User' doesn't exist in the database, create this user
-            if (userManager.FindUserByName<ApplicationUser>(ObjectSpace, "User") == null)
-            {
-                // Set a password if the standard authentication type is used
-                string EmptyPassword = "";
-                _ = userManager.CreateUser<ApplicationUser>(ObjectSpace, "User", EmptyPassword, (user) =>
-                {
-                    // Add the Users role to the user
-                    user.Roles.Add(defaultRole);
-                });
-            }
-
-            // If a user named 'Admin' doesn't exist in the database, create this user
-            if (userManager.FindUserByName<ApplicationUser>(ObjectSpace, "Admin") == null)
-            {
-                // Set a password if the standard authentication type is used
-                string EmptyPassword = "";
-                _ = userManager.CreateUser<ApplicationUser>(ObjectSpace, "Admin", EmptyPassword, (user) =>
-                {
-                    // Add the Administrators role to the user
-                    user.Roles.Add(adminRole);
-                });
-            }
-
-            ObjectSpace.CommitChanges(); //This line persists created object(s).
-#endif
+            ObjectSpace.CommitChanges();
         }
+
         public override void UpdateDatabaseBeforeUpdateSchema()
         {
             base.UpdateDatabaseBeforeUpdateSchema();
         }
+
         PermissionPolicyRole CreateAdminRole()
         {
-            PermissionPolicyRole adminRole = ObjectSpace.FirstOrDefault<PermissionPolicyRole>(r => r.Name == "Administrators");
-            if (adminRole == null)
+            var role = ObjectSpace.FirstOrDefault<PermissionPolicyRole>(r => r.Name == "Администраторы");
+            if (role == null)
             {
-                adminRole = ObjectSpace.CreateObject<PermissionPolicyRole>();
-                adminRole.Name = "Administrators";
-                adminRole.IsAdministrative = true;
+                role = ObjectSpace.CreateObject<PermissionPolicyRole>();
+                role.Name = "Администраторы";
+                role.IsAdministrative = true;
             }
-            return adminRole;
+            return role;
         }
+
+        PermissionPolicyRole CreateTeacherRole()
+        {
+            var role = ObjectSpace.FirstOrDefault<PermissionPolicyRole>(r => r.Name == "Учителя");
+            if (role == null)
+            {
+                role = ObjectSpace.CreateObject<PermissionPolicyRole>();
+                role.Name = "Учителя";
+
+                role.AddNavigationPermission("Application/NavigationItems/Items/Журнал", SecurityPermissionState.Allow);
+                role.AddNavigationPermission("Application/NavigationItems/Items/Школа", SecurityPermissionState.Allow);
+
+                role.AddTypePermission<Student>(SecurityOperations.Read, SecurityPermissionState.Allow);
+                role.AddTypePermission<Student>(SecurityOperations.Write, SecurityPermissionState.Deny);
+                role.AddTypePermission<Student>(SecurityOperations.Create, SecurityPermissionState.Deny);
+                role.AddTypePermission<Student>(SecurityOperations.Delete, SecurityPermissionState.Deny);
+
+                role.AddTypePermission<SchoolClass>(SecurityOperations.Read, SecurityPermissionState.Allow);
+                role.AddTypePermission<SchoolClass>(SecurityOperations.Write, SecurityPermissionState.Deny);
+                role.AddTypePermission<SchoolClass>(SecurityOperations.Create, SecurityPermissionState.Deny);
+                role.AddTypePermission<SchoolClass>(SecurityOperations.Delete, SecurityPermissionState.Deny);
+
+                role.AddTypePermission<Subject>(SecurityOperations.Read, SecurityPermissionState.Allow);
+                role.AddTypePermission<Subject>(SecurityOperations.Write, SecurityPermissionState.Deny);
+                role.AddTypePermission<Subject>(SecurityOperations.Create, SecurityPermissionState.Deny);
+                role.AddTypePermission<Subject>(SecurityOperations.Delete, SecurityPermissionState.Deny);
+
+                role.AddTypePermission<Teacher>(SecurityOperations.Read, SecurityPermissionState.Allow);
+                role.AddTypePermission<Teacher>(SecurityOperations.Write, SecurityPermissionState.Deny);
+                role.AddTypePermission<Teacher>(SecurityOperations.Create, SecurityPermissionState.Deny);
+                role.AddTypePermission<Teacher>(SecurityOperations.Delete, SecurityPermissionState.Deny);
+
+                role.AddTypePermission<AcademicTerm>(SecurityOperations.Read, SecurityPermissionState.Allow);
+                role.AddTypePermission<AcademicTerm>(SecurityOperations.Write, SecurityPermissionState.Deny);
+                role.AddTypePermission<AcademicTerm>(SecurityOperations.Create, SecurityPermissionState.Deny);
+                role.AddTypePermission<AcademicTerm>(SecurityOperations.Delete, SecurityPermissionState.Deny);
+
+                role.AddTypePermission<Grade>(SecurityOperations.Create, SecurityPermissionState.Allow);
+                role.AddObjectPermissionFromLambda<Grade>(
+                    SecurityOperations.ReadWriteAccess,
+                    g => g.Teacher.LinkedUser.ID == (Guid)CurrentUserIdOperator.CurrentUserId(),
+                    SecurityPermissionState.Allow);
+                role.AddObjectPermissionFromLambda<Grade>(
+                    SecurityOperations.Delete,
+                    g => g.Teacher.LinkedUser.ID == (Guid)CurrentUserIdOperator.CurrentUserId(),
+                    SecurityPermissionState.Allow);
+
+                role.AddTypePermissionsRecursively<Attendance>(SecurityOperations.ReadWriteAccess, SecurityPermissionState.Allow);
+                role.AddTypePermissionsRecursively<Attendance>(SecurityOperations.Create, SecurityPermissionState.Allow);
+                role.AddTypePermissionsRecursively<Attendance>(SecurityOperations.Delete, SecurityPermissionState.Allow);
+
+                role.AddTypePermissionsRecursively<Homework>(SecurityOperations.ReadWriteAccess, SecurityPermissionState.Allow);
+                role.AddTypePermissionsRecursively<Homework>(SecurityOperations.Create, SecurityPermissionState.Allow);
+                role.AddTypePermissionsRecursively<Homework>(SecurityOperations.Delete, SecurityPermissionState.Allow);
+
+                role.AddTypePermission<HomeworkSubmission>(SecurityOperations.Read, SecurityPermissionState.Allow);
+                role.AddTypePermission<HomeworkSubmission>(SecurityOperations.Write, SecurityPermissionState.Allow);
+
+                AddUserProfilePermissions(role);
+            }
+            return role;
+        }
+
+        PermissionPolicyRole CreateStudentRole()
+        {
+            var role = ObjectSpace.FirstOrDefault<PermissionPolicyRole>(r => r.Name == "Ученики");
+            if (role == null)
+            {
+                role = ObjectSpace.CreateObject<PermissionPolicyRole>();
+                role.Name = "Ученики";
+
+                role.AddNavigationPermission("Application/NavigationItems/Items/Журнал", SecurityPermissionState.Allow);
+
+                role.AddTypePermission<Subject>(SecurityOperations.Read, SecurityPermissionState.Allow);
+                role.AddTypePermission<Subject>(SecurityOperations.Write, SecurityPermissionState.Deny);
+                role.AddTypePermission<AcademicTerm>(SecurityOperations.Read, SecurityPermissionState.Allow);
+                role.AddTypePermission<AcademicTerm>(SecurityOperations.Write, SecurityPermissionState.Deny);
+
+                role.AddTypePermission<Grade>(SecurityOperations.Read, SecurityPermissionState.Deny);
+                role.AddTypePermission<Grade>(SecurityOperations.Write, SecurityPermissionState.Deny);
+                role.AddTypePermission<Grade>(SecurityOperations.Create, SecurityPermissionState.Deny);
+                role.AddTypePermission<Grade>(SecurityOperations.Delete, SecurityPermissionState.Deny);
+                role.AddObjectPermissionFromLambda<Grade>(
+                    SecurityOperations.Read,
+                    g => g.Student.LinkedUser.ID == (Guid)CurrentUserIdOperator.CurrentUserId(),
+                    SecurityPermissionState.Allow);
+
+                role.AddTypePermission<Attendance>(SecurityOperations.Read, SecurityPermissionState.Deny);
+                role.AddTypePermission<Attendance>(SecurityOperations.Write, SecurityPermissionState.Deny);
+                role.AddTypePermission<Attendance>(SecurityOperations.Create, SecurityPermissionState.Deny);
+                role.AddTypePermission<Attendance>(SecurityOperations.Delete, SecurityPermissionState.Deny);
+                role.AddObjectPermissionFromLambda<Attendance>(
+                    SecurityOperations.Read,
+                    a => a.Student.LinkedUser.ID == (Guid)CurrentUserIdOperator.CurrentUserId(),
+                    SecurityPermissionState.Allow);
+
+                role.AddTypePermission<Homework>(SecurityOperations.Read, SecurityPermissionState.Allow);
+                role.AddTypePermission<Homework>(SecurityOperations.Write, SecurityPermissionState.Deny);
+                role.AddTypePermission<Homework>(SecurityOperations.Create, SecurityPermissionState.Deny);
+                role.AddTypePermission<Homework>(SecurityOperations.Delete, SecurityPermissionState.Deny);
+
+                role.AddTypePermission<HomeworkSubmission>(SecurityOperations.Create, SecurityPermissionState.Allow);
+                role.AddObjectPermissionFromLambda<HomeworkSubmission>(
+                    SecurityOperations.ReadWriteAccess,
+                    s => s.Student.LinkedUser.ID == (Guid)CurrentUserIdOperator.CurrentUserId(),
+                    SecurityPermissionState.Allow);
+
+                AddUserProfilePermissions(role);
+            }
+            return role;
+        }
+
         PermissionPolicyRole CreateDefaultRole()
         {
-            PermissionPolicyRole defaultRole = ObjectSpace.FirstOrDefault<PermissionPolicyRole>(role => role.Name == "Default");
-            if (defaultRole == null)
+            var role = ObjectSpace.FirstOrDefault<PermissionPolicyRole>(r => r.Name == "Default");
+            if (role == null)
             {
-                defaultRole = ObjectSpace.CreateObject<PermissionPolicyRole>();
-                defaultRole.Name = "Default";
-
-                defaultRole.AddObjectPermissionFromLambda<ApplicationUser>(SecurityOperations.Read, cm => cm.ID == (Guid)CurrentUserIdOperator.CurrentUserId(), SecurityPermissionState.Allow);
-                defaultRole.AddNavigationPermission(@"Application/NavigationItems/Items/Default/Items/MyDetails", SecurityPermissionState.Allow);
-                defaultRole.AddMemberPermissionFromLambda<ApplicationUser>(SecurityOperations.Write, "ChangePasswordOnFirstLogon", cm => cm.ID == (Guid)CurrentUserIdOperator.CurrentUserId(), SecurityPermissionState.Allow);
-                defaultRole.AddMemberPermissionFromLambda<ApplicationUser>(SecurityOperations.Write, "StoredPassword", cm => cm.ID == (Guid)CurrentUserIdOperator.CurrentUserId(), SecurityPermissionState.Allow);
-                defaultRole.AddTypePermissionsRecursively<PermissionPolicyRole>(SecurityOperations.Read, SecurityPermissionState.Deny);
-                defaultRole.AddObjectPermission<ModelDifference>(SecurityOperations.ReadWriteAccess, "UserId = ToStr(CurrentUserId())", SecurityPermissionState.Allow);
-                defaultRole.AddObjectPermission<ModelDifferenceAspect>(SecurityOperations.ReadWriteAccess, "Owner.UserId = ToStr(CurrentUserId())", SecurityPermissionState.Allow);
-                defaultRole.AddTypePermissionsRecursively<ModelDifference>(SecurityOperations.Create, SecurityPermissionState.Allow);
-                defaultRole.AddTypePermissionsRecursively<ModelDifferenceAspect>(SecurityOperations.Create, SecurityPermissionState.Allow);
-                defaultRole.AddTypePermission<AuditDataItemPersistent>(SecurityOperations.Read, SecurityPermissionState.Deny);
-                defaultRole.AddObjectPermissionFromLambda<AuditDataItemPersistent>(SecurityOperations.Read, a => a.UserObject.Key == CurrentUserIdOperator.CurrentUserId().ToString(), SecurityPermissionState.Allow);
-                defaultRole.AddTypePermission<AuditEFCoreWeakReference>(SecurityOperations.Read, SecurityPermissionState.Allow);
+                role = ObjectSpace.CreateObject<PermissionPolicyRole>();
+                role.Name = "Default";
+                AddUserProfilePermissions(role);
             }
-            return defaultRole;
+            return role;
+        }
+
+        void AddUserProfilePermissions(PermissionPolicyRole role)
+        {
+            role.AddObjectPermissionFromLambda<ApplicationUser>(
+                SecurityOperations.Read,
+                u => u.ID == (Guid)CurrentUserIdOperator.CurrentUserId(),
+                SecurityPermissionState.Allow);
+            role.AddMemberPermissionFromLambda<ApplicationUser>(
+                SecurityOperations.Write, "ChangePasswordOnFirstLogon",
+                u => u.ID == (Guid)CurrentUserIdOperator.CurrentUserId(),
+                SecurityPermissionState.Allow);
+            role.AddMemberPermissionFromLambda<ApplicationUser>(
+                SecurityOperations.Write, "StoredPassword",
+                u => u.ID == (Guid)CurrentUserIdOperator.CurrentUserId(),
+                SecurityPermissionState.Allow);
+            role.AddTypePermissionsRecursively<PermissionPolicyRole>(SecurityOperations.Read, SecurityPermissionState.Deny);
+            role.AddObjectPermission<ModelDifference>(SecurityOperations.ReadWriteAccess, "UserId = ToStr(CurrentUserId())", SecurityPermissionState.Allow);
+            role.AddObjectPermission<ModelDifferenceAspect>(SecurityOperations.ReadWriteAccess, "Owner.UserId = ToStr(CurrentUserId())", SecurityPermissionState.Allow);
+            role.AddTypePermissionsRecursively<ModelDifference>(SecurityOperations.Create, SecurityPermissionState.Allow);
+            role.AddTypePermissionsRecursively<ModelDifferenceAspect>(SecurityOperations.Create, SecurityPermissionState.Allow);
+            role.AddTypePermission<AuditDataItemPersistent>(SecurityOperations.Read, SecurityPermissionState.Deny);
+            role.AddObjectPermissionFromLambda<AuditDataItemPersistent>(
+                SecurityOperations.Read,
+                a => a.UserObject.Key == CurrentUserIdOperator.CurrentUserId().ToString(),
+                SecurityPermissionState.Allow);
+            role.AddTypePermission<AuditEFCoreWeakReference>(SecurityOperations.Read, SecurityPermissionState.Allow);
         }
     }
 }

@@ -1,23 +1,142 @@
-﻿<?xml version="1.0" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Application Title="ModernSchoolDiary">
   <BOModel>
     <Class Name="DevExpress.Persistent.BaseImpl.EF.PermissionPolicy.PermissionPolicyUser" Caption="Base User" />
+    <Class Name="ModernSchoolDiary.Module.Domain.Models.AcademicTerm">
+      <OwnMembers>
+        <Member Name="EndDate" Caption="Окончание" />
+        <Member Name="Name" Caption="Название" />
+        <Member Name="StartDate" Caption="Начало" />
+      </OwnMembers>
+    </Class>
+    <Class Name="ModernSchoolDiary.Module.Domain.Models.Attendance">
+      <OwnMembers>
+        <Member Name="Date" Caption="Дата" />
+        <Member Name="DisplayName" Caption="Отображение" />
+        <Member Name="Reason" Caption="Причина" />
+        <Member Name="Status" Caption="Статус" />
+        <Member Name="Student" Caption="Ученик" />
+        <Member Name="Subject" Caption="Предмет" />
+      </OwnMembers>
+    </Class>
+    <Class Name="ModernSchoolDiary.Module.Domain.Models.Base.Person">
+      <OwnMembers>
+        <Member Name="Email" Caption="Электронная почта" />
+        <Member Name="FatherName" Caption="Отчество" />
+        <Member Name="FirstName" Caption="Имя" />
+        <Member Name="FullName" Caption="Полное имя" />
+        <Member Name="LastName" Caption="Фамилия" />
+        <Member Name="SchoolRole" Caption="Статус" />
+      </OwnMembers>
+    </Class>
+    <Class Name="ModernSchoolDiary.Module.Domain.Models.Grade">
+      <OwnMembers>
+        <Member Name="Comment" Caption="Комментарий" />
+        <Member Name="Date" Caption="Дата" />
+        <Member Name="DisplayName" Caption="Отображение" />
+        <Member Name="Period" Caption="Учебный период" />
+        <Member Name="Student" Caption="Ученик" />
+        <Member Name="Subject" Caption="Предмет" />
+        <Member Name="Teacher" Caption="Учитель" />
+        <Member Name="Value" Caption="Оценка" />
+      </OwnMembers>
+    </Class>
+    <Class Name="ModernSchoolDiary.Module.Domain.Models.Homework">
+      <OwnMembers>
+        <Member Name="Description" Caption="Описание" />
+        <Member Name="DisplayName" Caption="Отображение" />
+        <Member Name="DueDate" Caption="Сдача до" />
+        <Member Name="SchoolClass" Caption="Класс" />
+        <Member Name="Status" Caption="Статус" />
+        <Member Name="Subject" Caption="Предмет" />
+        <Member Name="Submissions" Caption="Ответы на задание" />
+        <Member Name="Teacher" Caption="Учитель" />
+      </OwnMembers>
+    </Class>
+    <Class Name="ModernSchoolDiary.Module.Domain.Models.HomeworkSubmission">
+      <OwnMembers>
+        <Member Name="DisplayName" Caption="Отображение" />
+        <Member Name="Homework" Caption="Домашнее задание" />
+        <Member Name="IsCompleted" Caption="Выполнение" />
+        <Member Name="Student" Caption="Студент" />
+        <Member Name="TeacherComment" Caption="Комментарий" />
+      </OwnMembers>
+    </Class>
+    <Class Name="ModernSchoolDiary.Module.Domain.Models.SchoolClass">
+      <OwnMembers>
+        <Member Name="ClassTeacher" Caption="Классный руководитель" />
+        <Member Name="Name" Caption="Название" />
+        <Member Name="Students" Caption="Студенты" />
+      </OwnMembers>
+    </Class>
+    <Class Name="ModernSchoolDiary.Module.Domain.Models.Student">
+      <OwnMembers>
+        <Member Name="AverageGrade" Caption="Средняя оценка" />
+        <Member Name="Grades" Caption="Оценки" />
+        <Member Name="LinkedUser" Caption="Связанный пользователь" />
+        <Member Name="SchoolClass" Caption="Класс" />
+      </OwnMembers>
+    </Class>
+    <Class Name="ModernSchoolDiary.Module.Domain.Models.Subject">
+      <OwnMembers>
+        <Member Name="Level" Caption="Уровень подготовки" />
+        <Member Name="Title" Caption="Название" />
+      </OwnMembers>
+    </Class>
+    <Class Name="ModernSchoolDiary.Module.Domain.Models.Teacher">
+      <OwnMembers>
+        <Member Name="LinkedUser" Caption="Связанный пользователь" />
+        <Member Name="ManagedClasses" Caption="Руководит классами" />
+      </OwnMembers>
+    </Class>
+    <Class Name="ModernSchoolDiary.Module.Domain.Models.TeacherSubjectClass">
+      <OwnMembers>
+        <Member Name="DisplayName" Caption="Отображение" />
+        <Member Name="SchoolClass" Caption="Класс" />
+        <Member Name="Subject" Caption="Предмет" />
+        <Member Name="Teacher" Caption="Учитель" />
+      </OwnMembers>
+    </Class>
   </BOModel>
   <Options>
     <LayoutManagerOptions RequiredFieldMark="*" />
   </Options>
+  <SchemaModules>
+    <SchemaModule Name="SystemModule" Version="25.2.7.0" IsNewNode="True" />
+  </SchemaModules>
   <Views>
     <ListView Id="ApplicationUser_ListView" Caption="Users" />
     <DetailView Id="ReportDataV2_DetailView">
       <Layout>
-        <LayoutGroup Id="Main" >
-          <LayoutGroup Id="SimpleEditors" >
-            <LayoutGroup Id="ReportDataV2" >
+        <LayoutGroup Id="Main">
+          <LayoutGroup Id="SimpleEditors">
+            <LayoutGroup Id="ReportDataV2">
               <LayoutItem Id="DisplayName" ViewItem="DisplayName" Index="0" IsNewNode="True" Removed="True" />
               <LayoutItem Id="ParametersObjectType" ViewItem="ParametersObjectType" Index="1" IsNewNode="True" Removed="True" />
               <LayoutItem Id="DataTypeCaption" ViewItem="DataTypeCaption" Index="2" IsNewNode="True" Removed="True" />
-              <LayoutItem Id="IsInplaceReport" Index="3" />
+              <LayoutItem Id="IsInplaceReport" Index="3" ViewItem="IsInplaceReport" />
             </LayoutGroup>
+          </LayoutGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+    <DetailView Id="StateMachine_DetailView">
+      <Layout>
+        <LayoutGroup Id="Main">
+          <LayoutGroup Id="SimpleEditors">
+            <LayoutGroup Id="StateMachine">
+              <LayoutGroup Id="StateMachine_col1">
+                <LayoutItem Id="Name" Index="0" ViewItem="Name" />
+                <LayoutItem Id="TargetObjectType" Index="1" ViewItem="TargetObjectType" />
+              </LayoutGroup>
+              <LayoutGroup Id="StateMachine_col2">
+                <LayoutItem Id="StatePropertyName" Index="1" ViewItem="StatePropertyName" />
+                <LayoutItem Id="ExpandActionsInDetailView" Index="2" ViewItem="ExpandActionsInDetailView" />
+              </LayoutGroup>
+            </LayoutGroup>
+          </LayoutGroup>
+          <LayoutGroup Id="States_Group">
+            <LayoutItem Id="States" ViewItem="States" />
           </LayoutGroup>
         </LayoutGroup>
       </Layout>
@@ -31,25 +150,27 @@
         <ColumnInfo Id="ExpandActionsInDetailView" Index="5" />
       </Columns>
     </ListView>
-    <DetailView Id="StateMachine_DetailView">
+    <DetailView Id="StateMachineAppearance_DetailView">
       <Layout>
         <LayoutGroup Id="Main">
-          <LayoutGroup Id="SimpleEditors" >
-            <LayoutGroup Id="StateMachine">
-              <LayoutGroup Id="StateMachine_col1" >
-                <LayoutItem Id="Name" ViewItem="Name" Index="0" />
-                <LayoutItem Id="TargetObjectType" ViewItem="TargetObjectType" Index="1" />
-                <LayoutItem Id="StartState" ViewItem="StartState" Index="2" />
+          <LayoutGroup Id="SimpleEditors">
+            <LayoutGroup Id="StateMachineAppearance">
+              <LayoutGroup Id="StateMachineAppearance_col1">
+                <LayoutItem Id="AppearanceItemType" Index="0" ViewItem="AppearanceItemType" />
+                <LayoutItem Id="Context" Index="1" ViewItem="Context" />
+                <LayoutItem Id="TargetItems" Index="2" ViewItem="TargetItems" />
+                <LayoutItem Id="Priority" ViewItem="Priority" Index="3" IsNewNode="True" />
+                <LayoutItem Id="FontColor" Index="4" ViewItem="FontColor" />
+                <LayoutItem Id="BackColor" ViewItem="BackColor" Removed="True" />
               </LayoutGroup>
-              <LayoutGroup Id="StateMachine_col2" >
-                <LayoutItem Id="Active" />
-                <LayoutItem Id="StatePropertyName" ViewItem="StatePropertyName" Index="1" />
-                <LayoutItem Id="ExpandActionsInDetailView" Index="2" />
+              <LayoutGroup Id="StateMachineAppearance_col2">
+                <LayoutItem Id="BackColor" ViewItem="BackColor" Index="0" IsNewNode="True" />
+                <LayoutItem Id="FontStyle" Index="1" ViewItem="FontStyle" />
+                <LayoutItem Id="Enabled" Index="2" ViewItem="Enabled" />
+                <LayoutItem Id="Visibility" Index="3" ViewItem="Visibility" />
+                <LayoutItem Id="Priority" ViewItem="Priority" Removed="True" />
               </LayoutGroup>
             </LayoutGroup>
-          </LayoutGroup>
-          <LayoutGroup Id="States_Group" >
-            <LayoutItem Id="States" />
           </LayoutGroup>
         </LayoutGroup>
       </Layout>
@@ -66,49 +187,24 @@
         <ColumnInfo Id="Visibility" Index="8" />
       </Columns>
     </ListView>
-    <DetailView Id="StateMachineAppearance_DetailView">
+    <DetailView Id="StateMachineState_DetailView">
       <Layout>
         <LayoutGroup Id="Main">
           <LayoutGroup Id="SimpleEditors">
-            <LayoutGroup Id="StateMachineAppearance">
-              <LayoutGroup Id="StateMachineAppearance_col1">
-                <LayoutItem Id="AppearanceItemType" Index="0" />
-                <LayoutItem Id="Context" Index="1" />
-                <LayoutItem Id="TargetItems" Index="2" />
-                <LayoutItem Id="Priority" ViewItem="Priority" Index="3" IsNewNode="True" />
-                <LayoutItem Id="FontColor" Index="4" />
-                <LayoutItem Id="BackColor" Removed="True" />
-              </LayoutGroup>
-              <LayoutGroup Id="StateMachineAppearance_col2">
-                <LayoutItem Id="BackColor" ViewItem="BackColor" Index="0" IsNewNode="True" />
-                <LayoutItem Id="Priority" Removed="True" />
-                <LayoutItem Id="FontStyle" Index="1" />
-                <LayoutItem Id="Enabled" Index="2" />
-                <LayoutItem Id="Visibility" Index="3" />
-              </LayoutGroup>
+            <LayoutGroup Id="StateMachineState">
+              <LayoutItem Id="Caption" Index="0" ViewItem="Caption" />
+              <LayoutItem Id="Marker" Index="1" ViewItem="Marker" />
             </LayoutGroup>
           </LayoutGroup>
-        </LayoutGroup>
-      </Layout>
-    </DetailView>
-    <DetailView Id="StateMachineState_DetailView">
-      <Layout>
-        <LayoutGroup Id="Main" >
-          <LayoutGroup Id="SimpleEditors" >
-            <LayoutGroup Id="StateMachineState" >
-              <LayoutItem Id="Caption" Index="0" />
-              <LayoutItem Id="Marker" Index="1" />
-            </LayoutGroup>
+          <LayoutGroup Id="SizeableEditors">
+            <LayoutItem Id="TargetObjectCriteria" ViewItem="TargetObjectCriteria" />
           </LayoutGroup>
-          <LayoutGroup Id="SizeableEditors" >
-            <LayoutItem Id="TargetObjectCriteria" />
-          </LayoutGroup>
-          <TabbedGroup Id="Tabs" >
-            <LayoutGroup Id="Transitions" TextAlignMode="AlignLocal" Index="0" >
-              <LayoutItem Id="Transitions" TextAlignMode="AutoSize" />
+          <TabbedGroup Id="Tabs">
+            <LayoutGroup Id="Transitions" TextAlignMode="AlignLocal" Index="0">
+              <LayoutItem Id="Transitions" TextAlignMode="AutoSize" ViewItem="Transitions" />
             </LayoutGroup>
-            <LayoutGroup Id="Appearances" TextAlignMode="AlignLocal" Index="1" >
-              <LayoutItem Id="Appearances" TextAlignMode="AutoSize"/>
+            <LayoutGroup Id="Appearances" TextAlignMode="AlignLocal" Index="1">
+              <LayoutItem Id="Appearances" TextAlignMode="AutoSize" ViewItem="Appearances" />
             </LayoutGroup>
           </TabbedGroup>
         </LayoutGroup>
@@ -123,13 +219,13 @@
     </ListView>
     <DetailView Id="StateMachineTransition_DetailView">
       <Layout>
-        <LayoutGroup Id="Main" >
-          <LayoutGroup Id="SimpleEditors" >
-            <LayoutGroup Id="StateMachineTransition" >
-              <LayoutItem Id="Caption" />
-              <LayoutItem Id="TargetState" Index="1" />
-              <LayoutItem Id="Index" Index="2" />
-              <LayoutItem Id="SaveAndCloseView" Index="3" />
+        <LayoutGroup Id="Main">
+          <LayoutGroup Id="SimpleEditors">
+            <LayoutGroup Id="StateMachineTransition">
+              <LayoutItem Id="Caption" ViewItem="Caption" />
+              <LayoutItem Id="TargetState" Index="1" ViewItem="TargetState" />
+              <LayoutItem Id="Index" Index="2" ViewItem="Index" />
+              <LayoutItem Id="SaveAndCloseView" Index="3" ViewItem="SaveAndCloseView" />
             </LayoutGroup>
           </LayoutGroup>
         </LayoutGroup>

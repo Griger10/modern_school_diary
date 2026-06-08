@@ -1,8 +1,10 @@
 ﻿using DevExpress.Persistent.Base;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -53,6 +55,18 @@ namespace ModernSchoolDiary.Module.Domain.Models
             $"{Subject?.Title} — {SchoolClass?.Name} — до {DueDate:dd.MM.yyyy}";
 
         [Display(Name = "Ответы")]
-        public virtual IList<HomeworkSubmission> Submissions { get; set; } = new List<HomeworkSubmission>();
+        public virtual ObservableCollection<HomeworkSubmission> Submissions { get; set; } = new();
+
+        [NotMapped]
+        [Display(Name = "Статус")]
+        public string Status
+        {
+            get
+            {
+                if (DueDate.Date < DateTime.Today)
+                    return "Просрочено";
+                return "Активно";
+            }
+        }
     }
 }

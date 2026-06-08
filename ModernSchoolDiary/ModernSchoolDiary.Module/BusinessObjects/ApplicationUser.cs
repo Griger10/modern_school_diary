@@ -1,9 +1,12 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using DevExpress.ExpressApp;
 using DevExpress.ExpressApp.Security;
 using DevExpress.Persistent.Base;
 using DevExpress.Persistent.BaseImpl.EF.PermissionPolicy;
+using ModernSchoolDiary.Module.Domain.Enums;
+using ModernSchoolDiary.Module.Domain.Models;
 
 namespace ModernSchoolDiary.Module.BusinessObjects
 {
@@ -20,6 +23,21 @@ namespace ModernSchoolDiary.Module.BusinessObjects
         [NonCloneable]
         [DevExpress.ExpressApp.DC.Aggregated]
         public virtual IList<ApplicationUserLoginInfo> UserLogins { get; set; } = new ObservableCollection<ApplicationUserLoginInfo>();
+
+        [Display(Name = "Роль в системе")]
+        public virtual UserRole? SchoolRole { get; set; }
+
+        [Browsable(false)]
+        public virtual Guid? LinkedTeacherId { get; set; }
+
+        [Display(Name = "Учитель")]
+        public virtual Teacher? LinkedTeacher { get; set; }
+
+        [Browsable(false)]
+        public virtual Guid? LinkedStudentId { get; set; }
+
+        [Display(Name = "Ученик")]
+        public virtual Student? LinkedStudent { get; set; }
 
         IEnumerable<ISecurityUserLoginInfo> IOAuthSecurityUser.UserLogins => UserLogins.OfType<ISecurityUserLoginInfo>();
 

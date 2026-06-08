@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,7 +41,20 @@ namespace ModernSchoolDiary.Module.Domain.Models
         public virtual string? TeacherComment { get; set; }
 
         [Display(Name = "Статус")]
-        public string DisplayName =>
-            $"{Student?.FullName} — {(IsCompleted ? "Принято" : "Отправлено на доработку")}";
+        public string DisplayName
+        {
+            get
+            {
+                string statusText;
+                if (IsCompleted)
+                    statusText = "Принято";
+                else if (Homework != null && Homework.DueDate.Date < DateTime.Today)
+                    statusText = "Просрочено";
+                else
+                    statusText = "Отправлено на доработку";
+
+                return $"{Student?.FullName} — {statusText}";
+            }
+        }
     }
 }

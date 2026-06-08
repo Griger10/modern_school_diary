@@ -2,15 +2,10 @@
 using System.ComponentModel.DataAnnotations;
 using DevExpress.Persistent.Base;
 using DevExpress.Persistent.Validation;
+using ModernSchoolDiary.Module.Domain.Enums;
 
 namespace ModernSchoolDiary.Module.Domain.Models
 {
-    public enum SubjectLevel
-    {
-        [Display(Name = "Базовый")] Base,
-        [Display(Name = "Профильный")] Advanced
-    }
-
     [DefaultClassOptions]
     [NavigationItem("Школа")]
     [DisplayName("Предметы")]

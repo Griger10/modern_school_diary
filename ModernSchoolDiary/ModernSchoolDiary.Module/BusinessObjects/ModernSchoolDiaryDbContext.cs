@@ -77,6 +77,25 @@ namespace ModernSchoolDiary.Module.BusinessObjects
                 .HasMany(t => t.Aspects)
                 .WithOne(t => t.Owner)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Student>().UseTpcMappingStrategy().ToTable("Students");
+            modelBuilder.Entity<Teacher>().UseTpcMappingStrategy().ToTable("Teachers");
+
+            modelBuilder.Entity<Student>()
+                .HasOne(s => s.LinkedUser)
+                .WithOne(u => u.LinkedStudent)
+                .HasForeignKey<Student>(s => s.LinkedUserId);
+
+            modelBuilder.Entity<Teacher>()
+                .HasOne(t => t.LinkedUser)
+                .WithOne(u => u.LinkedTeacher)
+                .HasForeignKey<Teacher>(t => t.LinkedUserId);
+
+            modelBuilder.Entity<SchoolClass>()
+                .HasOne(sc => sc.ClassTeacher)
+                .WithMany(t => t.ManagedClasses)
+                .HasForeignKey(sc => sc.ClassTeacherId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 

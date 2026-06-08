@@ -9,6 +9,11 @@ namespace ModernSchoolDiary.Module.Domain.Models
     [NavigationItem("Журнал")]
     [DisplayName("Оценки")]
     [DefaultProperty(nameof(DisplayName))]
+    [RuleCombinationOfPropertiesIsUnique(
+    "Grade_NoDuplicate",
+    DefaultContexts.Save,
+    "Student,Subject,Date",
+    CustomMessageTemplate = "Оценка этому ученику по этому предмету на эту дату уже выставлена")]
     public class Grade
     {
         [Key]

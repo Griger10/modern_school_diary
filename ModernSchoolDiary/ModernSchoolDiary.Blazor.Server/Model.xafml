@@ -1,10 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Application>
-  <Options UIType="TabbedMDI"
-         FormStyle="Ribbon"
-         RestoreTabbedMdiLayout="True"
-         ShowTabImage="True"
-	 VirtualScrollingEnabled="True">
-  </Options>
+  <BOModel>
+    <Class Name="ModernSchoolDiary.Module.Domain.Models.Grade">
+      <OwnMembers>
+        <Member Name="Comment" Caption="Комментарий" />
+        <Member Name="Date" Caption="Дата оценивания" />
+        <Member Name="DisplayName" Caption="Отображение" />
+        <Member Name="Id" Caption="Идентификатор" />
+        <Member Name="Period" Caption="Учебный период" />
+        <Member Name="Student" Caption="Ученик" />
+        <Member Name="Subject" Caption="Предмет" />
+        <Member Name="Teacher" Caption="Учитель" />
+        <Member Name="Value" Caption="Оценка" />
+      </OwnMembers>
+    </Class>
+  </BOModel>
   <NavigationItems NavigationStyle="Accordion" />
+  <Options UIType="TabbedMDI" FormStyle="Ribbon" RestoreTabbedMdiLayout="True" ShowTabImage="True" VirtualScrollingEnabled="True" />
+  <SchemaModules>
+    <SchemaModule Name="SystemModule" Version="25.2.7.0" IsNewNode="True" />
+  </SchemaModules>
 </Application>

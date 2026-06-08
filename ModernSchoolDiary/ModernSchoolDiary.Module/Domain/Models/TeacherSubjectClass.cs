@@ -12,7 +12,7 @@ namespace ModernSchoolDiary.Module.Domain.Models
 {
     [NavigationItem("Школа")]
     [DefaultProperty(nameof(DisplayName))]
-    [DisplayName("Учитель - Класс")]
+    [DisplayName("Учителя по классам")]
     public class TeacherSubjectClass
     {
         [Key]

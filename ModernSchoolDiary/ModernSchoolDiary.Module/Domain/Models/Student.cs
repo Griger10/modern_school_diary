@@ -1,45 +1,41 @@
-﻿using System.ComponentModel;
+﻿using DevExpress.Persistent.Base;
+using ModernSchoolDiary.Module.BusinessObjects;
+using ModernSchoolDiary.Module.Domain.Enums;
+using ModernSchoolDiary.Module.Domain.Models.Base;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using DevExpress.Persistent.Base;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ModernSchoolDiary.Module.Domain.Models
 {
     [DefaultClassOptions]
     [NavigationItem("Школа")]
-    [DisplayName("Ученик")]
+    [DisplayName("Ученики")]
     [DefaultProperty(nameof(FullName))]
-    public class Student
+    public class Student : Person
     {
-        [Key]
-        [Browsable(false)]
-        public virtual Guid Id { get; protected set; }
-
-        [Required]
-        [MaxLength(150)]
-        [Display(Name = "Фамилия")]
-        public virtual string LastName { get; set; } = string.Empty;
-
-        [Required]
-        [MaxLength(150)]
-        [Display(Name = "Имя")]
-        public virtual string FirstName { get; set; } = string.Empty;
-
-        [MaxLength(150)]
-        [Display(Name = "Отчество")]
-        public virtual string FatherName { get; set; } = "Отсутствует";
-
-        [Display(Name = "ФИО")]
-        public string FullName => FatherName == "Отсутствует"
-            ? $"{LastName} {FirstName}"
-            : $"{LastName} {FirstName} {FatherName}";
+        public override UserRole? SchoolRole => UserRole.Student;
 
         [Browsable(false)]
         public virtual Guid? SchoolClassId { get; set; }
 
+        [Display(Name = "Учебный класс")]
+        public virtual SchoolClass? SchoolClass { get; set; }
+
         [Browsable(false)]
         public virtual Guid? LinkedUserId { get; set; }
 
-        [Display(Name = "Учебный класс")]
-        public virtual SchoolClass? SchoolClass { get; set; }
+        [Display(Name = "Пользователь")]
+        public virtual ApplicationUser? LinkedUser { get; set; }
+
+        [Display(Name = "Оценки")]
+        public virtual ObservableCollection<Grade> Grades { get; set; }
+
+        [NotMapped]
+        [Display(Name = "Средний балл")]
+        public double AverageGrade => Grades.Any()
+            ? Math.Round(Grades.Average(g => g.Value), 2)
+            : 0;
     }
 }

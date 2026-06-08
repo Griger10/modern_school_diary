@@ -1,4 +1,5 @@
 ﻿using DevExpress.Persistent.Base;
+using ModernSchoolDiary.Module.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,19 +10,6 @@ using System.Threading.Tasks;
 
 namespace ModernSchoolDiary.Module.Domain.Models
 {
-    public enum AttendanceStatus
-    {
-        [Display(Name = "Присутствовал")] Present,
-        [Display(Name = "Отсутствовал")] Absent,
-        [Display(Name = "Опоздал")] Late
-    }
-
-    public enum AbsenceReason
-    {
-        [Display(Name = "—")] None,
-        [Display(Name = "Уважительная")] Excused,
-        [Display(Name = "Неуважительная")] Unexcused
-    }
 
     [DefaultClassOptions]
     [NavigationItem("Журнал")]

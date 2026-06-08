@@ -49,4 +49,9 @@
     <PackageReference Include="System.Security.Cryptography.Xml" />
     
   </ItemGroup>
+  <ItemGroup>
+    <None Update="UnusableNodes.xml">
+      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
+    </None>
+  </ItemGroup>
 </Project>
