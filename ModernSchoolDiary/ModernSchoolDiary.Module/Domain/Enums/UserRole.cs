@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevExpress.ExpressApp.DC;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,8 +10,8 @@ namespace ModernSchoolDiary.Module.Domain.Enums
 {
     public enum UserRole
     {
-        [Display(Name = "Администратор")] Administrator,
-        [Display(Name = "Учитель")] Teacher,
-        [Display(Name = "Ученик")] Student
+        [XafDisplayName("Администратор")] Administrator,
+        [XafDisplayName("Учитель")] Teacher,
+        [XafDisplayName("Ученик")] Student
     }
 }

@@ -17,16 +17,13 @@ namespace ModernSchoolDiary.Module.Domain.Models
 
         [Required]
         [MaxLength(100)]
-        [Display(Name = "Название")]
         [RuleUniqueValue]
         public virtual string Name { get; set; }
 
         [Required]
-        [Display(Name = "Начало")]
         public virtual DateTime StartDate { get; set; }
 
         [Required]
-        [Display(Name = "Окончание")]
         public virtual DateTime EndDate { get; set; }
     }
 }

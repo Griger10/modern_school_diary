@@ -19,21 +19,14 @@ namespace ModernSchoolDiary.Module.Domain.Models
 
         [Browsable(false)]
         public virtual Guid? SchoolClassId { get; set; }
-
-        [Display(Name = "Учебный класс")]
         public virtual SchoolClass? SchoolClass { get; set; }
 
         [Browsable(false)]
         public virtual Guid? LinkedUserId { get; set; }
-
-        [Display(Name = "Пользователь")]
         public virtual ApplicationUser? LinkedUser { get; set; }
-
-        [Display(Name = "Оценки")]
         public virtual ObservableCollection<Grade> Grades { get; set; }
 
         [NotMapped]
-        [Display(Name = "Средний балл")]
         public double AverageGrade => Grades.Any()
             ? Math.Round(Grades.Average(g => g.Value), 2)
             : 0;

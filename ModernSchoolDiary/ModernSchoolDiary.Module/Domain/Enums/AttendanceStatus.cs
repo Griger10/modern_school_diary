@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevExpress.ExpressApp.DC;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,8 +10,8 @@ namespace ModernSchoolDiary.Module.Domain.Enums
 {
     public enum AttendanceStatus
     {
-        [Display(Name = "Присутствовал")] Present,
-        [Display(Name = "Отсутствовал")] Absent,
-        [Display(Name = "Опоздал")] Late
+        [XafDisplayName("Присутствовал")] Present,
+        [XafDisplayName("Отсутствовал")] Absent,
+        [XafDisplayName("Опоздал")] Late
     }
 }

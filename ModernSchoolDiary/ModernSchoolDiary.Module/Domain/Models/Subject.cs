@@ -15,12 +15,9 @@ namespace ModernSchoolDiary.Module.Domain.Models
         [Browsable(false)]
         public virtual Guid Id { get; protected set; }
 
-        [Display(Name = "Название")]
         [Required]
         [MaxLength(100)]
         public virtual string Title { get; set; }
-
-        [Display(Name = "Уровень")]
         public virtual SubjectLevel Level { get; set; } = SubjectLevel.Base;
     }
 }

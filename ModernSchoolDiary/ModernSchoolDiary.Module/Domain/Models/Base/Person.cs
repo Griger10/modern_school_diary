@@ -18,23 +18,18 @@ namespace ModernSchoolDiary.Module.Domain.Models.Base
 
         [Required]
         [MaxLength(150)]
-        [Display(Name = "Фамилия")]
         public virtual string LastName { get; set; } = string.Empty;
 
         [Required]
         [MaxLength(150)]
-        [Display(Name = "Имя")]
         public virtual string FirstName { get; set; } = string.Empty;
 
         [MaxLength(150)]
-        [Display(Name = "Отчество")]
-        public virtual string FatherName { get; set; } = "Отсутствует";
+        public virtual string? FatherName { get; set; } = "Отсутствует";
 
         [MaxLength(200)]
-        [Display(Name = "Email")]
         public virtual string? Email { get; set; }
 
-        [Display(Name = "ФИО")]
         public string FullName => FatherName == "Отсутствует"
             ? $"{LastName} {FirstName}"
             : $"{LastName} {FirstName} {FatherName}";

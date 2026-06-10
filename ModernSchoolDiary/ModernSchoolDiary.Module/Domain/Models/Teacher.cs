@@ -16,16 +16,13 @@ namespace ModernSchoolDiary.Module.Domain.Models
     {
         public override UserRole? SchoolRole => UserRole.Teacher;
 
-        [Display(Name = "Классное руководство")]
         public virtual ObservableCollection<SchoolClass> ManagedClasses { get; set; } = new ();
 
-        [Display(Name = "Предметы и классы")]
         public virtual ObservableCollection<TeacherSubjectClass> Assignments { get; set; } = new();
 
         [Browsable(false)]
         public virtual Guid? LinkedUserId { get; set; }
 
-        [Display(Name = "Пользователь")]
         public virtual ApplicationUser? LinkedUser { get; set; }
     }
 }

@@ -23,24 +23,19 @@ namespace ModernSchoolDiary.Module.Domain.Models
         public virtual Guid HomeworkId { get; set; }
 
         [Required]
-        [Display(Name = "Задание")]
         public virtual Homework Homework { get; set; } = null!;
 
         [Browsable(false)]
         public virtual Guid StudentId { get; set; }
 
         [Required]
-        [Display(Name = "Ученик")]
         public virtual Student Student { get; set; } = null!;
 
-        [Display(Name = "Выполнено")]
         public virtual bool IsCompleted { get; set; }
 
         [MaxLength(500)]
-        [Display(Name = "Комментарий учителя")]
         public virtual string? TeacherComment { get; set; }
 
-        [Display(Name = "Статус")]
         public string DisplayName
         {
             get

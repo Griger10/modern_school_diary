@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevExpress.ExpressApp.DC;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace ModernSchoolDiary.Module.Domain.Enums
 {
     public enum SubjectLevel
     {
-        [Display(Name = "Базовый")] Base,
-        [Display(Name = "Профильный")] Advanced
+        [XafDisplayName("Базовый")] Base,
+        [XafDisplayName("Профильный")] Advanced
     }
 }

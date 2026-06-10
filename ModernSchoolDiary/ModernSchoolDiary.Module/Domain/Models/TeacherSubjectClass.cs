@@ -23,24 +23,19 @@ namespace ModernSchoolDiary.Module.Domain.Models
         public virtual Guid TeacherId { get; set; }
 
         [Required]
-        [Display(Name = "Учитель")]
         public virtual Teacher Teacher { get; set; } = null!;
 
         [Browsable(false)]
         public virtual Guid SubjectId { get; set; }
 
         [Required]
-        [Display(Name = "Предмет")]
         public virtual Subject Subject { get; set; } = null!;
 
         [Browsable(false)]
         public virtual Guid SchoolClassId { get; set; }
 
         [Required]
-        [Display(Name = "Класс")]
         public virtual SchoolClass SchoolClass { get; set; } = null!;
-
-        [Display(Name = "Назначение")]
         public string DisplayName =>
             $"{Teacher?.FullName} — {Subject?.Title} ({SchoolClass?.Name})";
     }

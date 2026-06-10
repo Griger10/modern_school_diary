@@ -21,10 +21,25 @@ namespace ModernSchoolDiary.Module.DatabaseUpdate
         {
             base.UpdateDatabaseAfterUpdateSchema();
 
-            CreateAdminRole();
+            var adminRole = CreateAdminRole();
+
             CreateTeacherRole();
             CreateStudentRole();
             CreateDefaultRole();
+
+
+            ApplicationUser adminUser = ObjectSpace.FirstOrDefault<ApplicationUser>(u => u.UserName == "Admin");
+            if (adminUser == null)
+            {
+                adminUser = ObjectSpace.CreateObject<ApplicationUser>();
+                adminUser.UserName = "Admin";
+                adminUser.SetPassword("");
+                adminUser.Roles.Add(adminRole);
+
+                ObjectSpace.CommitChanges();
+
+                ((ISecurityUserWithLoginInfo)adminUser).CreateUserLoginInfo(SecurityDefaults.PasswordAuthentication, ObjectSpace.GetKeyValueAsString(adminUser));
+            }
 
             ObjectSpace.CommitChanges();
         }
@@ -117,6 +132,17 @@ namespace ModernSchoolDiary.Module.DatabaseUpdate
                 role.Name = "Ученики";
 
                 role.AddNavigationPermission("Application/NavigationItems/Items/Журнал", SecurityPermissionState.Allow);
+                role.AddNavigationPermission("Application/NavigationItems/Items/Reports", SecurityPermissionState.Allow);
+
+                role.AddTypePermission<DevExpress.Persistent.BaseImpl.EF.ReportDataV2>(SecurityOperations.Read, SecurityPermissionState.Deny);
+                role.AddTypePermission<DevExpress.Persistent.BaseImpl.EF.ReportDataV2>(SecurityOperations.Write, SecurityPermissionState.Deny);
+                role.AddTypePermission<DevExpress.Persistent.BaseImpl.EF.ReportDataV2>(SecurityOperations.Create, SecurityPermissionState.Deny);
+                role.AddTypePermission<DevExpress.Persistent.BaseImpl.EF.ReportDataV2>(SecurityOperations.Delete, SecurityPermissionState.Deny);
+
+                role.AddObjectPermission<DevExpress.Persistent.BaseImpl.EF.ReportDataV2>(
+                    SecurityOperations.Read,
+                    "[PredefinedReportType] = 'ModernSchoolDiary.Module.Reports.GradesReport'",
+                    SecurityPermissionState.Allow);
 
                 role.AddTypePermission<Subject>(SecurityOperations.Read, SecurityPermissionState.Allow);
                 role.AddTypePermission<Subject>(SecurityOperations.Write, SecurityPermissionState.Deny);

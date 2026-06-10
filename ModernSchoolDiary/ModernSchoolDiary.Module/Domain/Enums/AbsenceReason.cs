@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevExpress.ExpressApp.DC;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,8 +10,8 @@ namespace ModernSchoolDiary.Module.Domain.Enums
 {
     public enum AbsenceReason
     {
-        [Display(Name = "—")] None,
-        [Display(Name = "Уважительная")] Excused,
-        [Display(Name = "Неуважительная")] Unexcused
+        [XafDisplayName("—")] None,
+        [XafDisplayName("Уважительная")] Excused,
+        [XafDisplayName("Неуважительная")] Unexcused
     }
 }

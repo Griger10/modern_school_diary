@@ -25,28 +25,22 @@ namespace ModernSchoolDiary.Module.Domain.Models
         public virtual Guid StudentId { get; set; }
 
         [Required]
-        [Display(Name = "Ученик")]
         public virtual Student Student { get; set; } = null!;
 
         [Browsable(false)]
         public virtual Guid SubjectId { get; set; }
 
         [Required]
-        [Display(Name = "Предмет")]
         public virtual Subject Subject { get; set; } = null!;
 
         [Required]
-        [Display(Name = "Дата")]
         public virtual DateTime Date { get; set; } = DateTime.Today;
 
         [Required]
-        [Display(Name = "Статус")]
         public virtual AttendanceStatus Status { get; set; } = AttendanceStatus.Present;
 
-        [Display(Name = "Причина отсутствия")]
         public virtual AbsenceReason Reason { get; set; } = AbsenceReason.None;
 
-        [Display(Name = "Запись")]
         public string DisplayName =>
             $"{Student?.FullName} — {Subject?.Title} — {Date:dd.MM.yyyy}";
     }

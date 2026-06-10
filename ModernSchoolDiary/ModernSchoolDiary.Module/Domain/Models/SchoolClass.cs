@@ -19,18 +19,14 @@ namespace ModernSchoolDiary.Module.Domain.Models
 
         [Required]
         [MaxLength(10)]
-        [Display(Name = "Название")]
         [RuleUniqueValue]
         public virtual string Name { get; set; } = String.Empty;
-
-        [Display(Name = "Ученики")]
         public virtual ObservableCollection<Student> Students { get; set; } = new();
 
         [Browsable(false)]
         public virtual Guid? ClassTeacherId { get; set; }
 
         [Required]
-        [Display(Name = "Классный руководитель")]
         public virtual Teacher? ClassTeacher { get; set; }
 
     }

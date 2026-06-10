@@ -51,7 +51,12 @@ namespace ModernSchoolDiary.Module
         public override IEnumerable<ModuleUpdater> GetModuleUpdaters(IObjectSpace objectSpace, Version versionFromDB)
         {
             ModuleUpdater updater = new DatabaseUpdate.Updater(objectSpace, versionFromDB);
-            return new ModuleUpdater[] { updater };
+            PredefinedReportsUpdater reportsUpdater = new PredefinedReportsUpdater(Application, objectSpace, versionFromDB);
+            reportsUpdater.AddPredefinedReport<ModernSchoolDiary.Module.Reports.GradesReport>(
+                "Ведомость успеваемости ученика",
+                typeof(ModernSchoolDiary.Module.Domain.Models.Grade),
+                isInplaceReport: false);
+            return new ModuleUpdater[] { updater, reportsUpdater };
         }
         public override void Setup(XafApplication application)
         {
