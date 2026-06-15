@@ -1,4 +1,5 @@
 ﻿using DevExpress.Persistent.Base;
+using DevExpress.Persistent.BaseImpl.EF;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,6 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DevExpress.ExpressApp.DC;
 
 namespace ModernSchoolDiary.Module.Domain.Models
 {
@@ -35,6 +37,15 @@ namespace ModernSchoolDiary.Module.Domain.Models
 
         [MaxLength(500)]
         public virtual string? TeacherComment { get; set; }
+
+        [Browsable(false)]
+        public virtual Guid? AttachedFileId { get; set; }
+
+        [FileTypeFilter("Документы", 1, "*.pdf", "*.doc", "*.docx")]
+        [FileTypeFilter("Изображения", 2, "*.png", "*.jpg", "*.jpeg")]
+        [XafDisplayName("Прикреплённый файл")]
+        [ExpandObjectMembers(ExpandObjectMembers.Never)]
+        public virtual FileData AttachedFile { get; set; }
 
         public string DisplayName
         {

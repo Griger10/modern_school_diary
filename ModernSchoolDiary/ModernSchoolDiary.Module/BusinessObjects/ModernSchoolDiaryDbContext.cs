@@ -96,6 +96,13 @@ namespace ModernSchoolDiary.Module.BusinessObjects
                 .WithMany(t => t.ManagedClasses)
                 .HasForeignKey(sc => sc.ClassTeacherId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<HomeworkSubmission>()
+                .HasOne(s => s.AttachedFile)
+                .WithMany()
+                .HasForeignKey(s => s.AttachedFileId)
+                .OnDelete(DeleteBehavior.SetNull);
+            
         }
     }
 

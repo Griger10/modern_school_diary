@@ -29,8 +29,7 @@ namespace ModernSchoolDiary.Module.Reports
             };
             DataSource = dataSource;
             DataMember = string.Empty;
-
-            FilterString = "[Student.Oid] = CurrentUserId()";
+            
             Margins = new System.Drawing.Printing.Margins(50, 50, 50, 50);
 
             var reportHeader = new ReportHeaderBand { HeightF = 45 };
@@ -40,7 +39,7 @@ namespace ModernSchoolDiary.Module.Reports
             reportHeader.Controls.Add(title);
 
             var ghStudent = new GroupHeaderBand { HeightF = 64, Level = 1 };
-            ghStudent.GroupFields.Add(new GroupField(F_StudentFullName));
+            ghStudent.GroupFields.Add(new GroupField("Student.FullName", XRColumnSortOrder.Ascending));
 
             var lblStudent = MakeExprLabel(0, 4, 670, 24, "'Ученик: ' + " + F_StudentFullName);
             lblStudent.Font = new Font("Segoe UI", 12f, FontStyle.Bold);
@@ -54,7 +53,7 @@ namespace ModernSchoolDiary.Module.Reports
             ghStudent.Controls.AddRange(new XRControl[] { lblStudent, lblClass, lblPeriod });
 
             var ghSubject = new GroupHeaderBand { HeightF = 28, Level = 0 };
-            ghSubject.GroupFields.Add(new GroupField(F_SubjectTitle));
+            ghSubject.GroupFields.Add(new GroupField("Subject.Title", XRColumnSortOrder.Ascending));
 
             var lblSubject = MakeExprLabel(0, 4, 670, 22, F_SubjectTitle);
             lblSubject.Font = new Font("Segoe UI", 11f, FontStyle.Bold);
@@ -72,6 +71,8 @@ namespace ModernSchoolDiary.Module.Reports
             var lblComment = MakeExprLabel(260, 0, 410, 22, F_GradeComment);
 
             detail.Controls.AddRange(new XRControl[] { lblDate, lblValue, lblComment });
+
+            detail.SortFields.Add(new GroupField("Date", XRColumnSortOrder.Ascending));
 
             var gfSubject = new GroupFooterBand { HeightF = 26, Level = 0 };
             var lblSubjAvgCap = MakeLabel(30, 2, 220, 22, "Средний балл по предмету:");
