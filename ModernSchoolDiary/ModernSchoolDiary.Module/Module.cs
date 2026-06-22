@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using DevExpress.ExpressApp;
+﻿using DevExpress.ExpressApp;
 using DevExpress.ExpressApp.Actions;
 using DevExpress.ExpressApp.DC;
 using DevExpress.ExpressApp.Editors;
@@ -12,17 +11,17 @@ using DevExpress.ExpressApp.StateMachine;
 using DevExpress.ExpressApp.Updating;
 using DevExpress.Persistent.Base;
 using DevExpress.Persistent.BaseImpl.EF.StateMachine;
+using ModernSchoolDiary.Module.Domain.Models;
+using ModernSchoolDiary.Module.Reports;
+using System.ComponentModel;
 
 namespace ModernSchoolDiary.Module
 {
-    // For more typical usage scenarios, be sure to check out https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.ModuleBase.
+    
     public sealed class ModernSchoolDiaryModule : ModuleBase
     {
         public ModernSchoolDiaryModule()
         {
-            //
-            // ModernSchoolDiaryModule
-            //
             AdditionalExportedTypes.Add(typeof(ModernSchoolDiary.Module.BusinessObjects.ApplicationUser));
             AdditionalExportedTypes.Add(typeof(DevExpress.Persistent.BaseImpl.EF.PermissionPolicy.PermissionPolicyRole));
             AdditionalExportedTypes.Add(typeof(DevExpress.Persistent.BaseImpl.EF.ModelDifference));
@@ -56,12 +55,12 @@ namespace ModernSchoolDiary.Module
                 "Ведомость успеваемости ученика",
                 typeof(ModernSchoolDiary.Module.Domain.Models.Grade),
                 isInplaceReport: false);
+            reportsUpdater.AddPredefinedReport<ClassListReport>("Список класса", typeof(Student), isInplaceReport: false);
             return new ModuleUpdater[] { updater, reportsUpdater };
         }
         public override void Setup(XafApplication application)
         {
             base.Setup(application);
-            // Manage various aspects of the application UI and behavior at the module level.
         }
         public override void Setup(ApplicationModulesManager moduleManager)
         {

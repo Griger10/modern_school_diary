@@ -15,8 +15,47 @@ namespace ModernSchoolDiary.Blazor.Server
         }
         public static int Main(string[] args)
         {
+            System.Runtime.Loader.AssemblyLoadContext.Default.Resolving += (context, name) =>
+            {
+                if (name.Name != null && name.Name.EndsWith(".resources"))
+                {
+                    var ruPath = System.IO.Path.Combine(
+                        AppContext.BaseDirectory, "ru", name.Name + ".dll");
+                    if (System.IO.File.Exists(ruPath))
+                        return context.LoadFromAssemblyPath(ruPath);
+                }
+                return null;
+            };
+            var culture = new System.Globalization.CultureInfo("ru-RU");
+            System.Globalization.CultureInfo.DefaultThreadCurrentCulture = culture;
+            System.Globalization.CultureInfo.DefaultThreadCurrentUICulture = culture;
             System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
             System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("ru-RU");
+            var asm = typeof(DevExpress.Blazor.DxGrid).Assembly;
+            Console.WriteLine($"=== Версия сборки: {asm.GetName().Version}");
+            Console.WriteLine($"=== Путь сборки: {asm.Location}");
+
+            // какие сателлиты реально видны рантайму
+            var dir = System.IO.Path.GetDirectoryName(asm.Location);
+            var ruDir = System.IO.Path.Combine(dir, "ru");
+            Console.WriteLine($"=== Папка ru существует: {System.IO.Directory.Exists(ruDir)}");
+            if (System.IO.Directory.Exists(ruDir))
+                foreach (var f in System.IO.Directory.GetFiles(ruDir))
+                    Console.WriteLine($"      {System.IO.Path.GetFileName(f)}");
+
+            // пробуем загрузить сателлит напрямую и прочитать его версию
+            try
+            {
+                var satPath = System.IO.Path.Combine(ruDir, "DevExpress.Blazor.v25.2.resources.dll");
+                var satAsm = System.Reflection.Assembly.LoadFile(satPath);
+                Console.WriteLine($"=== Сателлит версия: {satAsm.GetName().Version}, культура: {satAsm.GetName().CultureName}");
+                foreach (var n in satAsm.GetManifestResourceNames())
+                    Console.WriteLine($"      ресурс: {n}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"=== Не загрузить сателлит: {ex.Message}");
+            }
             if (ContainsArgument(args, "help") || ContainsArgument(args, "h"))
             {
                 Console.WriteLine("Updates the database when its version does not match the application's version.");

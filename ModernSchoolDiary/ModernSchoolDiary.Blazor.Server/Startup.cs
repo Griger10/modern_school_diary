@@ -30,12 +30,17 @@ namespace ModernSchoolDiary.Blazor.Server
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            var supportedCultures = new[] { new System.Globalization.CultureInfo("ru-RU") };
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("ru-RU");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+            });
+            services.AddLocalization();
             services.AddSingleton(typeof(Microsoft.AspNetCore.SignalR.HubConnectionHandler<>), typeof(ProxyHubConnectionHandler<>));
-
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddHttpContextAccessor();
@@ -49,8 +54,6 @@ namespace ModernSchoolDiary.Blazor.Server
                 {
                     webApiBuilder.ConfigureOptions(options =>
                     {
-                        // Make your business objects available in the Web API and generate the GET, POST, PUT, and DELETE HTTP methods for it.
-                        // options.BusinessObject<YourBusinessObject>();
                     });
                 });
 
@@ -91,10 +94,6 @@ namespace ModernSchoolDiary.Blazor.Server
                         contexts.Configure<ModernSchoolDiary.Module.BusinessObjects.ModernSchoolDiaryEFCoreDbContext, ModernSchoolDiary.Module.BusinessObjects.ModernSchoolDiaryAuditingDbContext>(
                             (serviceProvider, businessObjectDbContextOptions) =>
                             {
-                                // Uncomment this code to use an in-memory database. This database is recreated each time the server starts. With the in-memory database, you don't need to make a migration when the data model is changed.
-                                // Do not use this code in production environment to avoid data loss.
-                                // We recommend that you refer to the following help topic before you use an in-memory database: https://docs.microsoft.com/en-us/ef/core/testing/in-memory
-                                //businessObjectDbContextOptions.UseInMemoryDatabase();
                                 string connectionString = null;
                                 if (Configuration.GetConnectionString("ConnectionString") != null)
                                 {
@@ -131,20 +130,10 @@ namespace ModernSchoolDiary.Blazor.Server
                         options.Lockout.Enabled = true;
 
                         options.RoleType = typeof(PermissionPolicyRole);
-                        // ApplicationUser descends from PermissionPolicyUser and supports the OAuth authentication. For more information, refer to the following topic: https://docs.devexpress.com/eXpressAppFramework/402197
-                        // If your application uses PermissionPolicyUser or a custom user type, set the UserType property as follows:
                         options.UserType = typeof(ModernSchoolDiary.Module.BusinessObjects.ApplicationUser);
-                        // ApplicationUserLoginInfo is only necessary for applications that use the ApplicationUser user type.
-                        // If you use PermissionPolicyUser or a custom user type, comment out the following line:
                         options.UserLoginInfoType = typeof(ModernSchoolDiary.Module.BusinessObjects.ApplicationUserLoginInfo);
                         options.Events.OnSecurityStrategyCreated += securityStrategy =>
                         {
-                            // Use the 'PermissionsReloadMode.NoCache' option to load the most recent permissions from the database once
-                            // for every DbContext instance when secured data is accessed through this instance for the first time.
-                            // Use the 'PermissionsReloadMode.CacheOnFirstAccess' option to reduce the number of database queries.
-                            // In this case, permission requests are loaded and cached when secured data is accessed for the first time
-                            // and used until the current user logs out.
-                            // See the following article for more details: https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.Security.SecurityStrategy.PermissionsReloadMode.
                             ((SecurityStrategy)securityStrategy).PermissionsReloadMode = PermissionsReloadMode.NoCache;
                         };
                     })
@@ -166,8 +155,6 @@ namespace ModernSchoolDiary.Blazor.Server
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateIssuerSigningKey = true,
-                    //ValidIssuer = Configuration["Authentication:Jwt:Issuer"],
-                    //ValidAudience = Configuration["Authentication:Jwt:Audience"],
                     ValidateIssuer = false,
                     ValidateAudience = false,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Authentication:Jwt:IssuerSigningKey"])),
@@ -227,16 +214,10 @@ namespace ModernSchoolDiary.Blazor.Server
 
             services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(o =>
             {
-                //The code below specifies that the naming of properties in an object serialized to JSON must always exactly match
-                //the property names within the corresponding CLR type so that the property names are displayed correctly in the Swagger UI.
-                //XPO is case-sensitive and requires this setting so that the example request data displayed by Swagger is always valid.
-                //Comment this code out to revert to the default behavior.
-                //See the following article for more information: https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializeroptions.propertynamingpolicy
                 o.JsonSerializerOptions.PropertyNamingPolicy = null;
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -251,17 +232,22 @@ namespace ModernSchoolDiary.Blazor.Server
             else
             {
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. To change this for production scenarios, see: https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
-            app.UseRequestLocalization();
             app.UseStaticFiles();
             app.UseRouting();
+
+            var localizationOptions = app.ApplicationServices
+                .GetRequiredService<Microsoft.Extensions.Options.IOptions<RequestLocalizationOptions>>().Value;
+            app.UseRequestLocalization(localizationOptions);
+
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseAntiforgery();
             app.UseXaf();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapXafEndpoints();
@@ -269,9 +255,6 @@ namespace ModernSchoolDiary.Blazor.Server
                 endpoints.MapFallbackToPage("/_Host");
                 endpoints.MapControllers();
             });
-            var localizationOptions = app.ApplicationServices
-                .GetRequiredService<Microsoft.Extensions.Options.IOptions<RequestLocalizationOptions>>().Value;
-            app.UseRequestLocalization(localizationOptions);
         }
     }
 }

@@ -29,5 +29,8 @@ namespace ModernSchoolDiary.Module.Domain.Models
         [Required]
         public virtual Teacher? ClassTeacher { get; set; }
 
+        [Browsable(false)]
+        public virtual ObservableCollection<TeacherSubjectClass> Assignments { get; set; } = new ObservableCollection<TeacherSubjectClass>();
+
     }
 }

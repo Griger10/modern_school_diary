@@ -29,7 +29,29 @@ namespace ModernSchoolDiary.Module.Reports
             };
             DataSource = dataSource;
             DataMember = string.Empty;
-            
+            var periodParam = new DevExpress.XtraReports.Parameters.Parameter
+            {
+                Name = "PeriodParam",
+                Description = "Учебный период:",
+                Type = typeof(Guid),
+                Visible = true
+            };
+            var periodLookup = new DevExpress.XtraReports.Parameters.DynamicListLookUpSettings
+            {
+                DataAdapter = null,
+                DataSource = new CollectionDataSource
+                {
+                    ObjectTypeName = "ModernSchoolDiary.Module.Domain.Models.AcademicTerm"
+                },
+                ValueMember = "Id",
+                DisplayMember = "Name"
+            };
+            periodParam.ValueSourceSettings = periodLookup;
+
+            Parameters.Add(periodParam);
+            RequestParameters = true;
+            FilterString = "[Period.Id] = ?PeriodParam";
+
             Margins = new System.Drawing.Printing.Margins(50, 50, 50, 50);
 
             var reportHeader = new ReportHeaderBand { HeightF = 45 };
@@ -96,7 +118,26 @@ namespace ModernSchoolDiary.Module.Reports
             lblVerbal.Font = new Font("Segoe UI", 11f, FontStyle.Bold);
             lblVerbal.Borders = DevExpress.XtraPrinting.BorderSide.Top;
 
+            var reportFooter = new ReportFooterBand { HeightF = 40 };
+            var lblNoData = MakeLabel(0, 8, 670, 24, "За выбранный период оценки отсутствуют");
+            lblNoData.Font = new Font("Segoe UI", 12f, FontStyle.Bold);
+            lblNoData.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            lblNoData.ForeColor = Color.Gray;
+            lblNoData.ExpressionBindings.Add(new ExpressionBinding(
+                "BeforePrint", "Visible", "[DataSource.RowCount] == 0"));
+
+            reportFooter.Controls.Add(lblNoData);
+
             gfStudent.Controls.AddRange(new XRControl[] { lblTotalCap, lblTotalAvg, lblVerbal });
+
+            string hasData = "[DataSource.RowCount] > 0";
+
+            reportHeader.ExpressionBindings.Add(new ExpressionBinding("BeforePrint", "Visible", hasData));
+            ghStudent.ExpressionBindings.Add(new ExpressionBinding("BeforePrint", "Visible", hasData));
+            ghSubject.ExpressionBindings.Add(new ExpressionBinding("BeforePrint", "Visible", hasData));
+            detail.ExpressionBindings.Add(new ExpressionBinding("BeforePrint", "Visible", hasData));
+            gfSubject.ExpressionBindings.Add(new ExpressionBinding("BeforePrint", "Visible", hasData));
+            gfStudent.ExpressionBindings.Add(new ExpressionBinding("BeforePrint", "Visible", hasData));
 
             Bands.AddRange(new Band[]
             {
@@ -105,7 +146,8 @@ namespace ModernSchoolDiary.Module.Reports
                 ghSubject,
                 detail,
                 gfSubject,
-                gfStudent
+                gfStudent,
+                reportFooter,
             });
         }
 

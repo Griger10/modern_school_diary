@@ -98,14 +98,74 @@
       </OwnMembers>
     </Class>
   </BOModel>
+  <CreatableItems>
+    <CreatableItem ClassName="DevExpress.Persistent.BaseImpl.EFCore.AuditTrail.AuditDataItemPersistent" Caption="Аудит действий" />
+  </CreatableItems>
+  <Localization>
+    <LocalizationGroup Name="Captions" Removed="True" />
+    <LocalizationGroup Name="ChartModule">
+      <LocalizationGroup Name="Captions" IsNewNode="True">
+        <LocalizationItem Name="DashboardView" Value="DashboardView" IsNewNode="True" />
+        <LocalizationItem Name="DetailView" Value="DetailView" IsNewNode="True" />
+        <LocalizationItem Name="DiagnosticChildWindowAddition" Value="(Child Window)" IsNewNode="True" />
+        <LocalizationItem Name="EditCriteria" Value="Edit Criteria" IsNewNode="True" />
+        <LocalizationItem Name="ListView" Value="ListView" IsNewNode="True" />
+        <LocalizationItem Name="LogInWithActionCaption" Value="Log In with" IsNewNode="True" />
+        <LocalizationItem Name="View" Value="View" IsNewNode="True" />
+      </LocalizationGroup>
+    </LocalizationGroup>
+    <LocalizationGroup Name="DialogButtons">
+      <LocalizationItem Name="Submit" Value="Подтвердить" IsNewNode="True" />
+    </LocalizationGroup>
+  </Localization>
+  <NavigationItems>
+    <Items>
+      <Item Id="Журнал">
+        <Items>
+          <Item Id="Attendance_ListView" ImageName="BO_Appointment" />
+          <Item Id="Grade_ListView" ImageName="Chart" />
+          <Item Id="Homework_ListView" ImageName="TrackingChanges_ShowMarkup" />
+          <Item Id="HomeworkSubmission_ListView" ImageName="BO_Task" />
+        </Items>
+      </Item>
+      <Item Id="Школа">
+        <Items>
+          <Item Id="AcademicTerm_ListView" ImageName="Actions_Calendar" />
+          <Item Id="SchoolClass_ListView" ImageName="BO_Category" />
+          <Item Id="Student_ListView" ImageName="BO_MyDetails" />
+          <Item Id="Subject_ListView" ImageName="Actions_Book" />
+          <Item Id="Teacher_ListView" ImageName="BO_MyDetails" />
+          <Item Id="TeacherSubjectClass_ListView" ImageName="BO_Department" />
+        </Items>
+      </Item>
+      <Item Id="Reports" Caption="Отчетность" />
+      <Item Id="State Machine" Visible="False" />
+    </Items>
+  </NavigationItems>
   <Options>
     <LayoutManagerOptions RequiredFieldMark="*" />
   </Options>
   <SchemaModules>
-    <SchemaModule Name="SystemModule" Version="25.2.7.0" IsNewNode="True" />
+    <SchemaModule Name="SystemModule" Version="25.2.8.0" IsNewNode="True" />
   </SchemaModules>
   <Views>
     <ListView Id="ApplicationUser_ListView" Caption="Users" />
+    <ListView Id="Attendance_ListView">
+      <Columns>
+        <ColumnInfo Id="Subject" GroupIndex="0" />
+      </Columns>
+    </ListView>
+    <ListView Id="Grade_ListView">
+      <Columns>
+        <ColumnInfo Id="Subject" GroupIndex="1" />
+        <ColumnInfo Id="Period" GroupIndex="0" />
+      </Columns>
+    </ListView>
+    <ListView Id="Homework_ListView">
+      <Columns>
+        <ColumnInfo Id="Subject" GroupIndex="0" />
+      </Columns>
+    </ListView>
     <DetailView Id="ReportDataV2_DetailView">
       <Layout>
         <LayoutGroup Id="Main">
@@ -231,5 +291,10 @@
         </LayoutGroup>
       </Layout>
     </DetailView>
+    <ListView Id="Student_ListView">
+      <Columns>
+        <ColumnInfo Id="SchoolClass" GroupIndex="0" />
+      </Columns>
+    </ListView>
   </Views>
 </Application>

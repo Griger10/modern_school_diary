@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DevExpress.ExpressApp.DC;
+using DevExpress.ExpressApp.DC;
+using DevExpress.ExpressApp.Model;
 
 namespace ModernSchoolDiary.Module.Domain.Models
 {
@@ -24,13 +26,14 @@ namespace ModernSchoolDiary.Module.Domain.Models
         [Browsable(false)]
         public virtual Guid HomeworkId { get; set; }
 
-        [Required]
+        [System.ComponentModel.DataAnnotations.Required]
         public virtual Homework Homework { get; set; } = null!;
 
         [Browsable(false)]
         public virtual Guid StudentId { get; set; }
 
-        [Required]
+        [System.ComponentModel.DataAnnotations.Required]
+        [ModelDefault("AllowEdit", "False")]
         public virtual Student Student { get; set; } = null!;
 
         public virtual bool IsCompleted { get; set; }

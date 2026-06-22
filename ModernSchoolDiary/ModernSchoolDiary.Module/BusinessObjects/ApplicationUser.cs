@@ -5,6 +5,7 @@ using DevExpress.ExpressApp;
 using DevExpress.ExpressApp.Security;
 using DevExpress.Persistent.Base;
 using DevExpress.Persistent.BaseImpl.EF.PermissionPolicy;
+using DevExpress.Persistent.Validation;
 using ModernSchoolDiary.Module.Domain.Enums;
 using ModernSchoolDiary.Module.Domain.Models;
 
@@ -38,6 +39,11 @@ namespace ModernSchoolDiary.Module.BusinessObjects
 
         [Display(Name = "Ученик")]
         public virtual Student? LinkedStudent { get; set; }
+
+        [RuleFromBoolProperty("OneRoleOnly", DefaultContexts.Save,
+            "Пользователь не может быть одновременно учителем и учеником.")]
+        [Browsable(false)]
+        public virtual bool IsRoleValid => !(LinkedTeacher != null && LinkedStudent != null);
 
         IEnumerable<ISecurityUserLoginInfo> IOAuthSecurityUser.UserLogins => UserLogins.OfType<ISecurityUserLoginInfo>();
 

@@ -50,4 +50,10 @@
   <ItemGroup>
     <ProjectReference Include="..\ModernSchoolDiary.Module\ModernSchoolDiary.Module.csproj" />
   </ItemGroup>
+	<ItemGroup>
+		<Content Include="..\LocalizationSatellites\ru\*.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<TargetPath>ru\%(Filename)%(Extension)</TargetPath>
+		</Content>
+	</ItemGroup>
 </Project>

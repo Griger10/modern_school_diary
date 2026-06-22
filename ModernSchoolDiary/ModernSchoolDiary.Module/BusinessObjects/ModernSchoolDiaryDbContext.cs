@@ -17,7 +17,6 @@ namespace ModernSchoolDiary.Module.BusinessObjects
         public ModernSchoolDiaryEFCoreDbContext(DbContextOptions<ModernSchoolDiaryEFCoreDbContext> options) : base(options)
         {
         }
-        //public DbSet<ModuleInfo> ModulesInfo { get; set; }
         public DbSet<ModelDifference> ModelDifferences { get; set; }
         public DbSet<ModelDifferenceAspect> ModelDifferenceAspects { get; set; }
         public DbSet<PermissionPolicyRole> Roles { get; set; }
@@ -102,7 +101,17 @@ namespace ModernSchoolDiary.Module.BusinessObjects
                 .WithMany()
                 .HasForeignKey(s => s.AttachedFileId)
                 .OnDelete(DeleteBehavior.SetNull);
-            
+
+            modelBuilder.Entity<TeacherSubjectClass>()
+                .HasOne(t => t.Subject)
+                .WithMany(s => s.Assignments)
+                .HasForeignKey(t => t.SubjectId);
+
+            modelBuilder.Entity<TeacherSubjectClass>()
+                .HasOne(t => t.SchoolClass)
+                .WithMany(s => s.Assignments)
+                .HasForeignKey(t => t.SchoolClassId);
+
         }
     }
 

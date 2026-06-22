@@ -2,6 +2,16 @@
 @namespace ModernSchoolDiary.Blazor.Server
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @using DevExpress.ExpressApp.Blazor.Components
+@using System.Globalization
+@using Microsoft.AspNetCore.Localization
+@{
+    HttpContext.Response.Cookies.Append(
+        CookieRequestCultureProvider.DefaultCookieName,
+        CookieRequestCultureProvider.MakeCookieValue(
+            new RequestCulture(
+                new CultureInfo("ru-RU"),
+                new CultureInfo("ru-RU"))));
+}
 
 <!DOCTYPE html>
 <html lang="en">

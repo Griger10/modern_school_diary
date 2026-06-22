@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application>
+  <ActionDesign>
+    <Actions>
+      <Action Id="ShowNavigationItem" Caption="Меню управления" />
+    </Actions>
+  </ActionDesign>
+  <BOModel>
+    <Class Name="DevExpress.Persistent.BaseImpl.EF.PermissionPolicy.PermissionPolicyRole">
+      <OwnMembers>
+        <Member Name="Users" Caption="Пользователи" />
+      </OwnMembers>
+    </Class>
+    <Class Name="DevExpress.Persistent.BaseImpl.EFCore.AuditTrail.AuditDataItemPersistent" Caption="Аудит безопасности" />
+    <Class Name="ModernSchoolDiary.Module.BusinessObjects.ApplicationUser">
+      <OwnMembers>
+        <Member Name="LinkedStudent" Caption="Связанный студент" />
+        <Member Name="LinkedTeacher" Caption="Связанный учитель" />
+        <Member Name="SchoolRole" Caption="Школьная роль" />
+      </OwnMembers>
+    </Class>
+  </BOModel>
+  <Views>
+    <ListView Id="ApplicationUser_ListView" Caption="Пользователи" />
+    <DetailView Id="AuditDataItemPersistent_DetailView" Caption="Аудит безопасности" />
+    <ListView Id="AuditDataItemPersistent_ListView" Caption="Аудит безопасности" />
+    <ListView Id="AuditDataItemPersistent_LookupListView" Caption="Аудит безопасности" />
+    <ListView Id="AuditEFCoreWeakReference_AuditItems_ListView" Caption="Аудит безопасности" />
+    <ListView Id="AuditEFCoreWeakReference_NewItems_ListView" Caption="Аудит безопасности" />
+    <ListView Id="AuditEFCoreWeakReference_OldItems_ListView" Caption="Аудит безопасности" />
+    <ListView Id="AuditEFCoreWeakReference_UserItems_ListView" Caption="Аудит безопасности" />
+    <DetailView Id="PermissionPolicyRole_DetailView">
+      <Items>
+        <PropertyEditor Id="Users" Caption="Пользователи" />
+      </Items>
+      <Layout>
+        <LayoutGroup Id="Main">
+          <TabbedGroup Id="Tabs1">
+            <LayoutGroup Id="Users" Caption="Пользователи" />
+          </TabbedGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+  </Views>
+</Application>

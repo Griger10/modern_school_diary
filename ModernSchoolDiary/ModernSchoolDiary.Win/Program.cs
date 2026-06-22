@@ -23,9 +23,6 @@ namespace ModernSchoolDiary.Win
         {
             return args.Any(arg => arg.TrimStart('/').TrimStart('-').ToLower() == argument.ToLower());
         }
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
         [STAThread]
         public static int Main(string[] args)
         {
