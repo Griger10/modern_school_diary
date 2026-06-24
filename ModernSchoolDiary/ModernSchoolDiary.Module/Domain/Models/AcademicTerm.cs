@@ -24,6 +24,10 @@ namespace ModernSchoolDiary.Module.Domain.Models
         public virtual DateTime StartDate { get; set; }
 
         [Required]
+        [RuleValueComparison("TermEndAfterStart", DefaultContexts.Save,
+            ValueComparisonType.GreaterThan, "StartDate",
+            ParametersMode.Expression,
+            CustomMessageTemplate = "Дата окончания периода должна быть позже даты начала")]
         public virtual DateTime EndDate { get; set; }
     }
 }

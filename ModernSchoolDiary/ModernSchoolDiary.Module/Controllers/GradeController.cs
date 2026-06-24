@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Linq;
 using DevExpress.ExpressApp;
 using DevExpress.ExpressApp.Security;
 using ModernSchoolDiary.Module.BusinessObjects;
@@ -12,18 +13,22 @@ namespace ModernSchoolDiary.Module.Controllers
         protected override void OnActivated()
         {
             base.OnActivated();
-            ObjectSpace.ObjectChanged += ObjectSpace_ObjectChanged;
+
+            if (View.CurrentObject is Grade grade && ObjectSpace.IsNewObject(grade))
+            {
+                if (grade.Teacher == null)
+                {
+                    var user = SecuritySystem.CurrentUser as ApplicationUser;
+                    if (user?.LinkedTeacher != null)
+                    {
+                        grade.Teacher = ObjectSpace.GetObject(user.LinkedTeacher);
+                    }
+                }
+            }
+
             ObjectSpace.Committing += ObjectSpace_Committing;
         }
-        private void ObjectSpace_ObjectChanged(object sender, ObjectChangedEventArgs e)
-        {
-            if (View?.CurrentObject is Grade grade && grade.Teacher == null)
-            {
-                var user = SecuritySystem.CurrentUser as ApplicationUser;
-                if (user?.LinkedTeacher != null)
-                    grade.Teacher = ObjectSpace.GetObject(user.LinkedTeacher);
-            }
-        }
+
         private void ObjectSpace_Committing(object sender, CancelEventArgs e)
         {
             var user = SecuritySystem.CurrentUser as ApplicationUser;
@@ -50,7 +55,6 @@ namespace ModernSchoolDiary.Module.Controllers
 
         protected override void OnDeactivated()
         {
-            ObjectSpace.ObjectChanged -= ObjectSpace_ObjectChanged;
             ObjectSpace.Committing -= ObjectSpace_Committing;
             base.OnDeactivated();
         }

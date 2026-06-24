@@ -60,7 +60,7 @@ namespace ModernSchoolDiary.Module.Domain.Models
                 else if (Homework != null && Homework.DueDate.Date < DateTime.Today)
                     statusText = "Просрочено";
                 else
-                    statusText = "Отправлено на доработку";
+                    statusText = "Не оценено";
 
                 return $"{Student?.FullName} — {statusText}";
             }

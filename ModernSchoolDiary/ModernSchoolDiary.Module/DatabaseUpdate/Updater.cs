@@ -106,6 +106,7 @@ namespace ModernSchoolDiary.Module.DatabaseUpdate
                     SecurityOperations.Read,
                     "SchoolClass.Assignments[Teacher.LinkedUser.ID = CurrentUserId()]",
                     SecurityPermissionState.Allow);
+                role.AddMemberPermission<Student>(SecurityOperations.Write, nameof(Student.Grades), null, SecurityPermissionState.Allow);
 
                 role.AddTypePermission<Grade>(SecurityOperations.Read, SecurityPermissionState.Deny);
                 role.AddTypePermission<Grade>(SecurityOperations.Write, SecurityPermissionState.Deny);
@@ -220,21 +221,37 @@ namespace ModernSchoolDiary.Module.DatabaseUpdate
                 role.AddTypePermission<Homework>(SecurityOperations.Delete, SecurityPermissionState.Deny);
                 role.AddObjectPermission<Homework>(
                     SecurityOperations.Read,
-                    "Submissions[Student.LinkedUser.ID = CurrentUserId()]",
+                    "SchoolClass.Students[LinkedUser.ID = CurrentUserId()]",
+                    SecurityPermissionState.Allow);
+                role.AddMemberPermission<Homework>(
+                    SecurityOperations.Write,
+                    nameof(Homework.Submissions),
+                    null,
                     SecurityPermissionState.Allow);
 
                 role.AddTypePermission<HomeworkSubmission>(SecurityOperations.Read, SecurityPermissionState.Deny);
                 role.AddTypePermission<HomeworkSubmission>(SecurityOperations.Write, SecurityPermissionState.Deny);
                 role.AddTypePermission<HomeworkSubmission>(SecurityOperations.Delete, SecurityPermissionState.Deny);
                 role.AddTypePermission<HomeworkSubmission>(SecurityOperations.Create, SecurityPermissionState.Allow);
+                role.AddObjectPermission<HomeworkSubmission>(
+                    SecurityOperations.Read,
+                    "Student.LinkedUser.ID = CurrentUserId()",
+                    SecurityPermissionState.Allow);
+                role.AddObjectPermission<HomeworkSubmission>(
+                    SecurityOperations.Write,
+                    "Student.LinkedUser.ID = CurrentUserId() And IsCompleted = False",
+                    SecurityPermissionState.Allow);
+
+                role.AddMemberPermission<HomeworkSubmission>(
+                    SecurityOperations.Write, nameof(HomeworkSubmission.IsCompleted), null, SecurityPermissionState.Deny);
+
+                role.AddMemberPermission<HomeworkSubmission>(
+                    SecurityOperations.Write, nameof(HomeworkSubmission.TeacherComment), null, SecurityPermissionState.Deny);
+
                 role.AddTypePermission<DevExpress.Persistent.BaseImpl.EF.FileData>(
                     SecurityOperations.ReadWriteAccess, SecurityPermissionState.Allow);
                 role.AddTypePermission<DevExpress.Persistent.BaseImpl.EF.FileData>(
                     SecurityOperations.Create, SecurityPermissionState.Allow);
-                role.AddObjectPermission<HomeworkSubmission>(
-                    SecurityOperations.ReadWriteAccess,
-                    "Student.LinkedUser.ID = CurrentUserId()",
-                    SecurityPermissionState.Allow);
 
                 AddUserProfilePermissions(role);
             }
